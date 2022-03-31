@@ -219,6 +219,8 @@ else {
 
   $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
   // Проверяем меняются ли ранее сохраненные данные или отправляются новые.
+  print('<div style="color: red; font-size: 16px; text-align: center;"');
+  print("I'm here</div>");
   if (
     !empty($_COOKIE[session_name()]) &&
     session_start() && !empty($_SESSION['login'])
