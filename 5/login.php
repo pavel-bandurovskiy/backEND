@@ -26,7 +26,7 @@ if (!empty($_SESSION['login'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   if (!$_GET['pass']) {
     print('<div style="color: red; font-size: 16px; text-align: center;"');
-    print("Не верный пароль/логин проверьте корректность введенных данных</div>");
+    print('Не верный пароль/логин проверьте корректность введенных данных</div>');
   }
 ?>
   <form action="" method="POST">
@@ -61,6 +61,6 @@ else {
     // Записываем ID пользователя.
     $_SESSION['uid'] = $result['id'];
     // Делаем перенаправление.
-    header('Location: ./?');
+    header('Location: ./');
   }
 }

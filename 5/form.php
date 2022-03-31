@@ -33,6 +33,9 @@
   <div class="form-container">
     <div class="form-title">
       Форма
+      <div>
+        <a href="./form.php" <? ?>>выйти</a>
+      </div>
     </div>
     <form method="POST" action="">
       <div class="input-group" <?php if ($errors['name']) {

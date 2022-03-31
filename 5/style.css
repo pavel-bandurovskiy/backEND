@@ -34,7 +34,8 @@ body {
     color: #0b5ed7;
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(168, 210, 227, 1);
-    display: block;
+    display: flex;
+    justify-content: space-between;
     width: 100%;
 }
 
