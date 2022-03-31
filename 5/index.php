@@ -207,14 +207,14 @@ else {
     setcookie('bio_error', '', 100000);
     setcookie('policy_error', '', 100000);
   }
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $date = $_POST['birth'];
-  $gender = $_POST['gender'];
-  $limbs = $_POST['limbs'];
-  $bio = $_POST['bio'];
-  $policy = $_POST['policy'];
-  $powers = implode(',', $_POST['select']);
+  $name = $_POST['name_value'];
+  $email = $_POST['email_value'];
+  $date = $_POST['birth_value'];
+  $gender = $_POST['gender_value'];
+  $limbs = $_POST['limbs_value'];
+  $bio = $_POST['bio_value'];
+  $policy = $_POST['policy_value'];
+  $powers = implode(',', $_POST['select_value']);
   $member = $_SESSION['login'];
 
   $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
