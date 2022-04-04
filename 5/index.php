@@ -1,14 +1,7 @@
 <?php
 
-/**
- * Реализовать возможность входа с паролем и логином с использованием
- * сессии для изменения отправленных данных в предыдущей задаче,
- * пароль и логин генерируются автоматически при первоначальной отправке формы.
- */
-
-// Отправляем браузеру правильную кодировку,
-// файл index.php должен быть в кодировке UTF-8 без BOM.
 header('Content-Type: text/html; charset=UTF-8');
+session_start();
 
 // В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP
 // и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD'].
@@ -100,8 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   // Если нет предыдущих ошибок ввода, есть кука сессии, начали сессию и
   // ранее в сессию записан факт успешного логина.
   if (empty($errors) && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
-    $member = $_SESSION['login'];
     try {
+      $member = $_SESSION['login'];
       $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
       $stmt = $db->prepare("SELECT * FROM members WHERE login = ?");
       $stmt->execute(array($member));
@@ -124,20 +117,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   }
-
-  // Включаем содержимое файла form.php.
-  // В нем будут доступны переменные $messages, $errors и $values для вывода 
-  // сообщений, полей с ранее заполненными данными и признаками ошибок.
   include('form.php');
 }
 // Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
 else {
-  // Проверяем ошибки.
-  $errors = FALSE;
-  if (!filter_var($_COOKIE['email_value'], FILTER_VALIDATE_EMAIL)) {
-    $errors['email'] = !empty($_COOKIE['email_error']);
-  }
-
   $errors = FALSE;
   // проверка поля имени
   if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
