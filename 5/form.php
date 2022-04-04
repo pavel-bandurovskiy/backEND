@@ -34,7 +34,7 @@
     <div class="form-title">
       Форма
       <div>
-        <a href="login.php?logout=1" style="display: <?php (empty($_SESSION['login'])) ? "inline-block" : "none"; ?>">выйти</a>
+        <a href="login.php?logout=1" style="display: <?php (!empty($_SESSION['login'])) ? "inline-block" : "none"; ?>">выйти</a>
       </div>
     </div>
     <form method="POST" action="">
