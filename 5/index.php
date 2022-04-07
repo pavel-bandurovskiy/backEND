@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       exit();
     }
     //printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
-    echo '<div>Вход с логином $_SESSION['login'], uid $_SESSION['uid']</div>';
+    echo "<div>Вход с логином $_SESSION['login'], uid $_SESSION['uid']</div>";
   }
   include('form.php');
 }
