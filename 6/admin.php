@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $powers = $db->prepare("DELETE FROM powers2 where user_login = ?");
         $powers->execute(array($_POST['delete']));
-        header('Location: ?delete_error=0');
+        header('Location: ./?delete_error=0');
     }
 }
 
@@ -100,7 +100,7 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
                     <?php echo $value['bio']?>
                 </td>
                 <td class="edit-buttons">
-                    <form action="" method="post">
+                    <form action="./?admin=1" method="post">
                         <input value="<?php echo $value['login']?>" name="edit" type="hidden"/>
                         <button id="edit">Edit</button>
                     </form>
@@ -116,7 +116,7 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
                     }
                 }
                 else {
-                    echo "No Record Found";
+                    echo "Записи не найдены";
                 }
             ?>
         </table>
