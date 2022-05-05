@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     $values = array();
-    if(empty($_POST['admin'])) {
+    if(empty($_POST['edit'])) {
         $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
         $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
         $values['birth'] = empty($_COOKIE['birth_value']) ? '' : $_COOKIE['birth_value'];
@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 } else {
     $errors = FALSE;
-    if(empty($_POST['admin'])) {
+    if(empty($_POST['edit'])) {
             // проверка поля имени
         if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
             setcookie('name_error', '1', time() + 24 * 60 * 60);
@@ -181,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('policy_error', '', 100000);
     }
 
-    if(empty($_POST['admin'])) {
+    if(empty($_POST['edit'])) {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $date = $_POST['birth'];
