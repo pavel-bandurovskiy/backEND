@@ -8,7 +8,7 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
   try {
     $stmt = $db->prepare("SELECT * FROM admins WHERE login = ?");
     $stmt->execute(array($_SERVER['PHP_AUTH_USER']));
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
   } catch (PDOException $e) {
     print('Error : ' . $e->getMessage());
     exit();
