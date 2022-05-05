@@ -4,11 +4,11 @@ header('Content-Type: text/html; charset=UTF-8');
 session_start();
 
 // В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP
-// и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD'].
+// и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD']
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   // Массив для временного хранения сообщений пользователю.
   $messages = array();
-
   // В суперглобальном массиве $_COOKIE PHP хранит все имена и значения куки текущего запроса.
   // Выдаем сообщение об успешном сохранении.
   if (!empty($_COOKIE['save'])) {
@@ -123,6 +123,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 // Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
 else {
+  if(!empty($_POST['admin'])) {
+    if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
+        try {
+          $stmt = $db->prepare("SELECT * FROM admins WHERE login = ?");
+          $stmt->execute(array($_SERVER['PHP_AUTH_USER']));
+          $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+          print('Error : ' . $e->getMessage());
+          exit();
+        }
+      
+        if(empty($result['password'])) {
+          header('HTTP/1.1 401 Unanthorized');
+          header('WWW-Authenticate: Basic realm="My site"');
+          print('<h1>401 Неверный логин</h1>');
+          exit();
+        }
+        
+        if($result['password'] != md5($_SERVER['PHP_AUTH_PW'])) {
+          header('HTTP/1.1 401 Unanthorized');
+          header('WWW-Authenticate: Basic realm="My site"');
+          print('<h1>401 Неверный пароль</h1>');
+          exit();
+        }
+      
+        print('Вы успешно авторизовались и видите защищенные паролем данные.');
+      
+        $_SESSION['login'] = $_POST['edit'];
+        //header('Location ./');  
+      } else {
+        header('HTTP/1.1 401 Unanthorized');
+        header('WWW-Authenticate: Basic realm="My site"');
+        print('<h1>401 Требуется авторизация</h1>');
+        exit();
+      }
+
+    }
+
+
   $errors = FALSE;
   // проверка поля имени
   if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
@@ -171,7 +210,7 @@ else {
     setcookie('select_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } else {
-    setcookie('select_value', $_POST['select'], time() + 12 * 30 * 24 * 60 * 60);
+    setcookie('select_value', implode(',', $_POST['select']), time() + 12 * 30 * 24 * 60 * 60);
   }
 
   // проверка поля биографии
