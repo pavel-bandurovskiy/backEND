@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('select_value', '', 100000);
         setcookie('bio_value', '', 100000);
         setcookie('policy_value', '', 100000);
+        setcookie('login_value', '', 100000);
         header('Location: admin.php');
     }
 
@@ -79,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 } else {
     $errors = FALSE;
-    if(empty($_POST['edit'])) {
+    if(empty($_COOKIE['login_value'])) {
             // проверка поля имени
         if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
             setcookie('name_error', '1', time() + 24 * 60 * 60);
@@ -146,11 +147,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             setcookie('policy_value', $_POST['policy'], time() + 12 * 30 * 24 * 60 * 60);
         }
     } else {
+        setcookie('login_value', $_POST['edit'], time() + 12 * 30 * 24 * 60 * 60);
         $user = 'u47572';
         $pass = '4532025';
         $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
         $stmt = $db->prepare("SELECT * FROM members WHERE login = ?");
-        $stmt->execute(array($_POST['edit']));
+        $stmt->execute(array($_COOKIE['login_value']));
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $values['name'] = $result['name'];
         $values['email'] = $result['email'];
@@ -161,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['policy'] = $result['policy'];
 
         $powers = $db->prepare("SELECT * FROM powers2 WHERE user_login = ?");
-        $powers->execute(array($_POST['edit']));
+        $powers->execute(array($_COOKIE['login_value']));
         $result = $powers->fetch(PDO::FETCH_ASSOC);
         $values['select'] = $result['powers'];
 
@@ -196,10 +198,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         try {
             $stmt = $db->prepare("UPDATE members SET name = ?, email = ?, date = ?, gender = ?, limbs = ?, bio = ?, policy = ? WHERE login = ?");
-            $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $member));
+            $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $_COOKIE['login_value']));
     
             $superpowers = $db->prepare("UPDATE powers2 SET powers = ? WHERE user_login = ? ");
-            $superpowers->execute(array($powers, $member));
+            $superpowers->execute(array($powers, $_COOKIE['login_value']));
         } catch (PDOException $e) {
             print('Error : ' . $e->getMessage());
             exit();
@@ -207,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('update', '1');
 
     // Делаем перенаправление.
-    if(empty($_POST['edit'])) {
+    if(empty($_COOKIE['login_value'])) {
         header('Location: edit.php');
     }
 }?>
