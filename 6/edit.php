@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 } else {
     $errors = FALSE;
-    if(empty($_COOKIE['login_value'])) {
+    if(!empty($_COOKIE['login_value'])) {
             // проверка поля имени
         if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
             setcookie('name_error', '1', time() + 24 * 60 * 60);
