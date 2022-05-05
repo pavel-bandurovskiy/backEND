@@ -4,7 +4,7 @@ $user = 'u47572';
 $pass = '4532025';
 $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 
-if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW']) {
+if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
   try {
     $stmt = $db->prepare("SELECT * FROM admins WHERE login = ?");
     $stmt->execute(array($_SERVER['PHP_AUTH_USER']));
