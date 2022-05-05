@@ -31,7 +31,7 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
   print('Вы успешно авторизовались и видите защищенные паролем данные.');
 
   $stmt = $db->prepare("SELECT * FROM members");
-  $stmt->execute();
+  $stmt->execute([]);
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
 } else {
   header('HTTP/1.1 401 Unanthorized');
