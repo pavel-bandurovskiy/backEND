@@ -3,6 +3,9 @@
 header('Content-Type: text/html; charset=UTF-8');
 session_start();
 
+$user = 'u47572';
+$pass = '4532025';
+$db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 // В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP
 // и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD']
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -35,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
           
             $_SESSION['login'] = $_POST['edit'];
             $_SESSION['admin'] = $_POST['admin'];
-            header('Location ./');  
+            //header('Location ./');  
         } else {
             header('HTTP/1.1 401 Unanthorized');
             header('WWW-Authenticate: Basic realm="My site"');
@@ -163,72 +166,73 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 // Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
 else {
   $errors = FALSE;
-  // проверка поля имени
-  if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
-    setcookie('name_error', '1', time() + 24 * 60 * 60);
-    $errors = TRUE;
-  } else {
-    setcookie('name_value', $_POST['name'], time() + 12 * 30 * 24 * 60 * 60);
-  }
+  if(empty($_POST['admin'])) {
+    // проверка поля имени
+    if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
+        setcookie('name_error', '1', time() + 24 * 60 * 60);
+        $errors = TRUE;
+    } else {
+        setcookie('name_value', $_POST['name'], time() + 12 * 30 * 24 * 60 * 60);
+    }
 
-  // проверка поля email
-  if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-    setcookie('email_error', '1', time() + 24 * 60 * 60);
-    $errors = TRUE;
-  } else {
-    setcookie('email_value', $_POST['email'], time() + 12 * 30 * 24 * 60 * 60);
-  }
+    // проверка поля email
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        setcookie('email_error', '1', time() + 24 * 60 * 60);
+        $errors = TRUE;
+    } else {
+        setcookie('email_value', $_POST['email'], time() + 12 * 30 * 24 * 60 * 60);
+    }
 
-  // проверка поля даты рождения
-  $birth = explode('-', $_POST['birth']);
-  $age = (int)date('Y') - (int)$birth[0];
-  if ($age > 100 || $age < 0) {
-    setcookie('birth_error', '1', time() + 24 * 60 * 60);
-    $errors = TRUE;
-  } else {
-    setcookie('birth_value', $_POST['birth'], time() + 12 * 30 * 24 * 60 * 60);
-  }
+    // проверка поля даты рождения
+    $birth = explode('-', $_POST['birth']);
+    $age = (int)date('Y') - (int)$birth[0];
+    if ($age > 100 || $age < 0) {
+        setcookie('birth_error', '1', time() + 24 * 60 * 60);
+        $errors = TRUE;
+    } else {
+        setcookie('birth_value', $_POST['birth'], time() + 12 * 30 * 24 * 60 * 60);
+    }
 
-  // проверка поля пола
-  if (empty($_POST['gender'])) {
-    setcookie('gender_error', '1', time() + 24 * 60 * 60);
-    $errors = TRUE;
-  } else {
-    setcookie('gender_value', $_POST['gender'], time() + 12 * 30 * 24 * 60 * 60);
-  }
+    // проверка поля пола
+    if (empty($_POST['gender'])) {
+        setcookie('gender_error', '1', time() + 24 * 60 * 60);
+        $errors = TRUE;
+    } else {
+        setcookie('gender_value', $_POST['gender'], time() + 12 * 30 * 24 * 60 * 60);
+    }
 
-  // проверка поля количества конечностей
-  if (empty($_POST['limbs'])) {
-    setcookie('limbs_error', '1', time() + 24 * 60 * 60);
-    $errors = TRUE;
-  } else {
-    setcookie('limbs_value', $_POST['limbs'], time() + 12 * 30 * 24 * 60 * 60);
-  }
+    // проверка поля количества конечностей
+    if (empty($_POST['limbs'])) {
+        setcookie('limbs_error', '1', time() + 24 * 60 * 60);
+        $errors = TRUE;
+    } else {
+        setcookie('limbs_value', $_POST['limbs'], time() + 12 * 30 * 24 * 60 * 60);
+    }
 
-  // проверка поля суперспособностей
-  if (empty($_POST['select'])) {
-    setcookie('select_error', '1', time() + 24 * 60 * 60);
-    $errors = TRUE;
-  } else {
-    setcookie('select_value', implode(',', $_POST['select']), time() + 12 * 30 * 24 * 60 * 60);
-  }
+    // проверка поля суперспособностей
+    if (empty($_POST['select'])) {
+        setcookie('select_error', '1', time() + 24 * 60 * 60);
+        $errors = TRUE;
+    } else {
+        setcookie('select_value', implode(',', $_POST['select']), time() + 12 * 30 * 24 * 60 * 60);
+    }
 
-  // проверка поля биографии
-  if (empty($_POST['bio'])) {
-    setcookie('bio_error', '1', time() + 24 * 60 * 60);
-    $errors = TRUE;
-  } else {
-    setcookie('bio_value', $_POST['bio'], time() + 12 * 30 * 24 * 60 * 60);
-  }
+    // проверка поля биографии
+    if (empty($_POST['bio'])) {
+        setcookie('bio_error', '1', time() + 24 * 60 * 60);
+        $errors = TRUE;
+    } else {
+        setcookie('bio_value', $_POST['bio'], time() + 12 * 30 * 24 * 60 * 60);
+    }
 
-  // проверка поля политики обработки данных 
-  if (empty($_POST['policy'])) {
-    setcookie('policy_error', '1', time() + 24 * 60 * 60);
-    $errors = TRUE;
-  } else {
-    setcookie('policy_value', $_POST['policy'], time() + 12 * 30 * 24 * 60 * 60);
+    // проверка поля политики обработки данных 
+    if (empty($_POST['policy'])) {
+        setcookie('policy_error', '1', time() + 24 * 60 * 60);
+        $errors = TRUE;
+    } else {
+        setcookie('policy_value', $_POST['policy'], time() + 12 * 30 * 24 * 60 * 60);
+    }
   }
-
   if ($errors) {
     // При наличии ошибок перезагружаем страницу и завершаем работу скрипта.
     header('Location: index.php');
