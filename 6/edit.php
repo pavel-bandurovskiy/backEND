@@ -209,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('update', '1');
 
     // Делаем перенаправление.
-    if(empty($_COOKIE['login_value'])) {
+    if(empty($_POST['edit'])) {
         header('Location: edit.php');
     }
 }?>
