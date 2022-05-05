@@ -79,6 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $values['policy'] = empty($_COOKIE['policy_value']) ? '' : $_COOKIE['policy_value'];
 
 } else {
+    if($_POST['edit']) {
+        setcookie('login_value', $_POST['edit'], time() + 12 * 30 * 24 * 60 * 60);
+    }
     $errors = FALSE;
     if(!empty($_COOKIE['login_value'])) {
             // проверка поля имени
@@ -147,7 +150,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             setcookie('policy_value', $_POST['policy'], time() + 12 * 30 * 24 * 60 * 60);
         }
     } else {
-        setcookie('login_value', $_POST['edit'], time() + 12 * 30 * 24 * 60 * 60);
         $user = 'u47572';
         $pass = '4532025';
         $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
