@@ -181,15 +181,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('policy_error', '', 100000);
     }
 
-    if(empty($_POST['edit'])) {
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $date = $_POST['birth'];
-        $gender = $_POST['gender'];
-        $limbs = $_POST['limbs'];
-        $bio = $_POST['bio'];
-        $policy = $_POST['policy'];
-        $powers = implode(',', $_POST['select']);
+        $name = $value['name'];
+        $email = $value['email'];
+        $date = $value['birth'];
+        $gender = $value['gender'];
+        $limbs = $value['limbs'];
+        $bio = $value['bio'];
+        $policy = $value['policy'];
+        $powers = implode(',', $value['select']);
 
         $user = 'u47572';
         $pass = '4532025';
@@ -206,7 +205,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             exit();
         }
         setcookie('update', '1');
-    }
 
     // Делаем перенаправление.
     if(empty($_POST['edit'])) {
