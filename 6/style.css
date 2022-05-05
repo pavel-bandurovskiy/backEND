@@ -11,6 +11,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .form-container {
@@ -79,4 +80,77 @@ body {
     padding-left: 25px;
     padding-right: 10px;
     width: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.records-list {
+    padding: 30px 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table td {
+    border: 2px solid #E3E6EC;
+    border-collapse: collapse;
+}
+
+td, th {
+    font-size: 13px;
+    padding: 0px 8px;
+}
+
+table th {
+    font-size: 15px;
+    color: #fff;
+    background: #5A5C66;
+    height: 30px;
+}
+
+#bio {
+    width: 300px;
+}
+
+.edit-buttons {
+    width: 60px;
+    border: none;
+}
+
+.edit-buttons form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-buttons form button {
+    padding: 5px;
+    transition: 250ms;
+}
+
+#edit {
+    color: #4356e0;
+    background-color: #fff;
+    border: 1px solid #4356e0;
+}
+
+#delete {
+    color: #e04350;
+    background-color: #fff;
+    border: 1px solid #e04350;
+}
+
+#delete:active {
+    background-color: #e04350;
+    color: #fff;
+}
+
+#edit:active {
+    background-color: #4356e0;
+    color: #fff;
 }
