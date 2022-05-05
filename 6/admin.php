@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $powers = $db->prepare("DELETE FROM powers2 where user_login = ?");
         $powers->execute(array($_POST['delete']));
-        header('Location: ./?delete_error=0');
+        header('Location: ?delete_error=0');
     }
 }
 
