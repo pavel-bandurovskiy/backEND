@@ -4,6 +4,32 @@ $user = 'u47572';
 $pass = '4532025';
 $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $stmt = $db->prepare("SELECT * FROM members WHERE login = ?");
+    $stmt->execute(array($_POST['delete']));
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if(empty($result)) {
+        header('Location: ./?delete_error=1');
+    } else {
+        $stmt = $db->prepare("DELETE FROM members WHERE login = ?");
+        $stmt->execute(array($_POST['delete']));
+
+        $powers = $db->prepare("DELETE FROM powers2 where user_login = ?");
+        $powers->execute(array($_POST['delete']));
+        header('Location: ./?delete_error=0');
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if(!empty($_GET['delete_error'])) {
+        if($_GET['delete_error'] == '0') {
+            print('<p>Данные успешно удалены</p>');
+        } else {
+            print('<p>Возникла ошибка при удалении данных попробуйте еще раз</p>');
+        }
+    }
+}
+
 if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
   try {
     $stmt = $db->prepare("SELECT * FROM admins WHERE login = ?");
@@ -85,13 +111,13 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
                 </td>
                 <td class="edit-buttons">
                     <form action="" method="post">
-                        <input value="<?php echo $value['id']?>" type="hidden"/>
+                        <input value="<?php echo $value['login']?>" name="edit" type="hidden"/>
                         <button id="edit">Edit</button>
                     </form>
                 </td>
                 <td class="edit-buttons">
                     <form action="" method="post">
-                        <input value="<?php echo $value['id']?>" type="hidden"/>
+                        <input value="<?php echo $value['login']?>" name="delete" type="hidden"/>
                         <button id="delete">Delete</button>
                     </form>
                 </td>
