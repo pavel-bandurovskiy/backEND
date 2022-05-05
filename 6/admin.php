@@ -75,7 +75,7 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
                 <td>
                     <?php 
                     $powers = $db->prepare("SELECT * FROM powers2 where user_login = ?");
-                    $powers->execute(array($result['login']));
+                    $powers->execute(array($value['login']));
                     $superpowers = $powers->fetch(PDO::FETCH_ASSOC);
                     echo $superpowers['powers'];
                     ?>
