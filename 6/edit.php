@@ -67,35 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     $values = array();
-    if(empty($_POST['edit'])) {
-        $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
-        $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
-        $values['birth'] = empty($_COOKIE['birth_value']) ? '' : $_COOKIE['birth_value'];
-        $values['gender'] = empty($_COOKIE['gender_value']) ? '' : $_COOKIE['gender_value'];
-        $values['limbs'] = empty($_COOKIE['limbs_value']) ? '' : $_COOKIE['limbs_value'];
-        $values['select'] = empty($_COOKIE['select_value']) ? '' : $_COOKIE['select_value'];
-        $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
-        $values['policy'] = empty($_COOKIE['policy_value']) ? '' : $_COOKIE['policy_value'];
-    } else {
-        $user = 'u47572';
-        $pass = '4532025';
-        $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
-        $stmt = $db->prepare("SELECT * FROM members WHERE login = ?");
-        $stmt->execute(array($_POST['edit']));
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $values['name'] = $result['name'];
-        $values['email'] = $result['email'];
-        $values['birth'] = $result['date'];
-        $values['gender'] = $result['gender'];
-        $values['limbs'] = $result['limbs'];
-        $values['bio'] = $result['bio'];
-        $values['policy'] = $result['policy'];
-
-        $powers = $db->prepare("SELECT * FROM powers2 WHERE user_login = ?");
-        $powers->execute(array($_POST['edit']));
-        $result = $powers->fetch(PDO::FETCH_ASSOC);
-        $values['select'] = $result['powers'];
-    }
+    
+    $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
+    $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
+    $values['birth'] = empty($_COOKIE['birth_value']) ? '' : $_COOKIE['birth_value'];
+    $values['gender'] = empty($_COOKIE['gender_value']) ? '' : $_COOKIE['gender_value'];
+    $values['limbs'] = empty($_COOKIE['limbs_value']) ? '' : $_COOKIE['limbs_value'];
+    $values['select'] = empty($_COOKIE['select_value']) ? '' : $_COOKIE['select_value'];
+    $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
+    $values['policy'] = empty($_COOKIE['policy_value']) ? '' : $_COOKIE['policy_value'];
 
 } else {
     $errors = FALSE;
@@ -165,6 +145,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         } else {
             setcookie('policy_value', $_POST['policy'], time() + 12 * 30 * 24 * 60 * 60);
         }
+    } else {
+        $user = 'u47572';
+        $pass = '4532025';
+        $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
+        $stmt = $db->prepare("SELECT * FROM members WHERE login = ?");
+        $stmt->execute(array($_POST['edit']));
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $values['name'] = $result['name'];
+        $values['email'] = $result['email'];
+        $values['birth'] = $result['date'];
+        $values['gender'] = $result['gender'];
+        $values['limbs'] = $result['limbs'];
+        $values['bio'] = $result['bio'];
+        $values['policy'] = $result['policy'];
+
+        $powers = $db->prepare("SELECT * FROM powers2 WHERE user_login = ?");
+        $powers->execute(array($_POST['edit']));
+        $result = $powers->fetch(PDO::FETCH_ASSOC);
+        $values['select'] = $result['powers'];
+
+        // setcookie('name_value', $result['name'], time() + 12 * 30 * 24 * 60 * 60);
+        // setcookie('email_value', $result['email'], time() + 12 * 30 * 24 * 60 * 60);
+        // setcookie('birth_value', $result['birth'], time() + 12 * 30 * 24 * 60 * 60);
+        // setcookie('gender_value', $result['gender'], time() + 12 * 30 * 24 * 60 * 60);
+        // setcookie('limbs_value', $result['limbs'], time() + 12 * 30 * 24 * 60 * 60);
+        // setcookie('select_value', implode(',', $result['select']), time() + 12 * 30 * 24 * 60 * 60);
+        // setcookie('bio_value', $result['bio'], time() + 12 * 30 * 24 * 60 * 60);
+        // setcookie('policy_value', $result['policy'], time() + 12 * 30 * 24 * 60 * 60);
     }
 
     if ($errors) {
