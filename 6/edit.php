@@ -181,14 +181,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('policy_error', '', 100000);
     }
 
-        $name = $value['name'];
-        $email = $value['email'];
-        $date = $value['birth'];
-        $gender = $value['gender'];
-        $limbs = $value['limbs'];
-        $bio = $value['bio'];
-        $policy = $value['policy'];
-        $powers = implode(',', $value['select']);
+        $name = $values['name'];
+        $email = $values['email'];
+        $date = $values['birth'];
+        $gender = $values['gender'];
+        $limbs = $values['limbs'];
+        $bio = $values['bio'];
+        $policy = $values['policy'];
+        $powers = implode(',', $values['select']);
 
         $user = 'u47572';
         $pass = '4532025';
