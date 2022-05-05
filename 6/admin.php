@@ -9,14 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute(array($_POST['delete']));
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if(empty($result)) {
-        header('Location: ./?delete_error=1');
+        header('Location: ?delete_error=1');
     } else {
         $stmt = $db->prepare("DELETE FROM members WHERE login = ?");
         $stmt->execute(array($_POST['delete']));
 
         $powers = $db->prepare("DELETE FROM powers2 where user_login = ?");
         $powers->execute(array($_POST['delete']));
-        header('Location: ./?delete_error=0');
+        header('Location: ?delete_error=0');
     }
 }
 
