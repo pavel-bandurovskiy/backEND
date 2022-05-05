@@ -67,16 +67,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     $values = array();
-    $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
-    $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
-    $values['birth'] = empty($_COOKIE['birth_value']) ? '' : $_COOKIE['birth_value'];
-    $values['gender'] = empty($_COOKIE['gender_value']) ? '' : $_COOKIE['gender_value'];
-    $values['limbs'] = empty($_COOKIE['limbs_value']) ? '' : $_COOKIE['limbs_value'];
-    $values['select'] = empty($_COOKIE['select_value']) ? '' : $_COOKIE['select_value'];
-    $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
-    $values['policy'] = empty($_COOKIE['policy_value']) ? '' : $_COOKIE['policy_value'];
+    if(empty($_POST['admin'])) {
+        $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
+        $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
+        $values['birth'] = empty($_COOKIE['birth_value']) ? '' : $_COOKIE['birth_value'];
+        $values['gender'] = empty($_COOKIE['gender_value']) ? '' : $_COOKIE['gender_value'];
+        $values['limbs'] = empty($_COOKIE['limbs_value']) ? '' : $_COOKIE['limbs_value'];
+        $values['select'] = empty($_COOKIE['select_value']) ? '' : $_COOKIE['select_value'];
+        $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
+        $values['policy'] = empty($_COOKIE['policy_value']) ? '' : $_COOKIE['policy_value'];
+    } else {
+        $user = 'u47572';
+        $pass = '4532025';
+        $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
+        $stmt = $db->prepare("SELECT * FROM members WHERE login = ?");
+        $stmt->execute(array($_POST['edit']));
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $values['name'] = $result['name'];
+        $values['email'] = $result['email'];
+        $values['birth'] = $result['date'];
+        $values['gender'] = $result['gender'];
+        $values['limbs'] = $result['limbs'];
+        $values['bio'] = $result['bio'];
+        $values['policy'] = $result['policy'];
 
-    include('form.php');
+        $powers = $db->prepare("SELECT * FROM powers2 WHERE user_login = ?");
+        $powers->execute(array($_POST['edit']));
+        $result = $powers->fetch(PDO::FETCH_ASSOC);
+        $values['select'] = $result['powers'];
+    }
+
 } else {
     $errors = FALSE;
     if(empty($_POST['admin'])) {
@@ -161,30 +181,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('policy_error', '', 100000);
     }
 
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $date = $_POST['birth'];
-    $gender = $_POST['gender'];
-    $limbs = $_POST['limbs'];
-    $bio = $_POST['bio'];
-    $policy = $_POST['policy'];
-    $powers = implode(',', $_POST['select']);
+    if(empty($_POST['admin'])) {
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $date = $_POST['birth'];
+        $gender = $_POST['gender'];
+        $limbs = $_POST['limbs'];
+        $bio = $_POST['bio'];
+        $policy = $_POST['policy'];
+        $powers = implode(',', $_POST['select']);
 
-    $user = 'u47572';
-    $pass = '4532025';
-    $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
+        $user = 'u47572';
+        $pass = '4532025';
+        $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 
-    try {
-        $stmt = $db->prepare("UPDATE members SET name = ?, email = ?, date = ?, gender = ?, limbs = ?, bio = ?, policy = ? WHERE login = ?");
-        $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $member));
-  
-        $superpowers = $db->prepare("UPDATE powers2 SET powers = ? WHERE user_login = ? ");
-        $superpowers->execute(array($powers, $member));
-    } catch (PDOException $e) {
-        print('Error : ' . $e->getMessage());
-        exit();
+        try {
+            $stmt = $db->prepare("UPDATE members SET name = ?, email = ?, date = ?, gender = ?, limbs = ?, bio = ?, policy = ? WHERE login = ?");
+            $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $member));
+    
+            $superpowers = $db->prepare("UPDATE powers2 SET powers = ? WHERE user_login = ? ");
+            $superpowers->execute(array($powers, $member));
+        } catch (PDOException $e) {
+            print('Error : ' . $e->getMessage());
+            exit();
+        }
+        setcookie('update', '1');
     }
-    setcookie('update', '1');
 
     // Делаем перенаправление.
     header('Location: edit.php');
@@ -200,11 +222,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
   <title>Update <?php echo $values['name']?> data</title>
   <style>
-    .error {
-      color: rgba(245, 46, 46, 1);
-      border: 1px solid rgba(245, 46, 46, 1);
-      box-shadow: 1px 2px 15px rgba(245, 46, 46, 0.5);
-    }
   </style>
 </head>
 
