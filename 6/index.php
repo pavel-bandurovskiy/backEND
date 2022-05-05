@@ -3,51 +3,6 @@
 header('Content-Type: text/html; charset=UTF-8');
 session_start();
 
-$user = 'u47572';
-$pass = '4532025';
-$db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
-// В суперглобальном массиве $_SERVER PHP сохраняет некторые заголовки запроса HTTP
-// и другие сведения о клиненте и сервере, например метод текущего запроса $_SERVER['REQUEST_METHOD']
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if(!empty($_POST['admin'])) {
-        if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
-            try {
-              $stmt = $db->prepare("SELECT * FROM admins WHERE login = ?");
-              $stmt->execute(array($_SERVER['PHP_AUTH_USER']));
-              $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            } catch (PDOException $e) {
-              print('Error : ' . $e->getMessage());
-              exit();
-            }
-          
-            if(empty($result['password'])) {
-              header('HTTP/1.1 401 Unanthorized');
-              header('WWW-Authenticate: Basic realm="My site"');
-              print('<h1>401 Неверный логин</h1>');
-              exit();
-            }
-            
-            if($result['password'] != md5($_SERVER['PHP_AUTH_PW'])) {
-              header('HTTP/1.1 401 Unanthorized');
-              header('WWW-Authenticate: Basic realm="My site"');
-              print('<h1>401 Неверный пароль</h1>');
-              exit();
-            }
-          
-            print('Вы успешно авторизовались и видите защищенные паролем данные.');
-          
-            $_SESSION['login'] = $_POST['edit'];
-            $_SESSION['admin'] = $_POST['admin'];
-            //header('Location ./');  
-        } else {
-            header('HTTP/1.1 401 Unanthorized');
-            header('WWW-Authenticate: Basic realm="My site"');
-            print('<h1>401 Требуется авторизация</h1>');
-            exit();
-        }
-    
-    }
-}
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   // Массив для временного хранения сообщений пользователю.
   $messages = array();
@@ -166,7 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 // Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
 else {
   $errors = FALSE;
-  if(empty($_POST['admin'])) {
     // проверка поля имени
     if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
         setcookie('name_error', '1', time() + 24 * 60 * 60);
@@ -232,7 +186,6 @@ else {
     } else {
         setcookie('policy_value', $_POST['policy'], time() + 12 * 30 * 24 * 60 * 60);
     }
-  }
   if ($errors) {
     // При наличии ошибок перезагружаем страницу и завершаем работу скрипта.
     header('Location: index.php');
