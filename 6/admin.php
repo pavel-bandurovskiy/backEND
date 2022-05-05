@@ -16,17 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $powers = $db->prepare("DELETE FROM powers2 where user_login = ?");
         $powers->execute(array($_POST['delete']));
-        header('Location: .');
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    if(!empty($_GET['delete_error'])) {
-        if($_GET['delete_error'] == '0') {
-            print('<p>Данные успешно удалены</p>');
-        } else {
-            print('<p>Возникла ошибка при удалении данных попробуйте еще раз</p>');
-        }
+        header('Location: ?delete_error=0');
     }
 }
 
