@@ -34,7 +34,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             print('Вы успешно авторизовались и видите защищенные паролем данные.');
           
             $_SESSION['login'] = $_POST['edit'];
-            //header('Location ./');  
+            $_SESSION['admin'] = $_POST['admin'];
+            header('Location ./');  
         } else {
             header('HTTP/1.1 401 Unanthorized');
             header('WWW-Authenticate: Basic realm="My site"');
