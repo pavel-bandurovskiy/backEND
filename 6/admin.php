@@ -8,7 +8,7 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
   try {
     $stmt = $db->prepare("SELECT * FROM admins WHERE login = ?");
     $stmt->execute(array($_SERVER['PHP_AUTH_USER']));
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
   } catch (PDOException $e) {
     print('Error : ' . $e->getMessage());
     exit();
@@ -32,7 +32,7 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
 
   $stmt = $db->prepare("SELECT * FROM members");
   $stmt->execute([]);
-  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
   header('HTTP/1.1 401 Unanthorized');
   header('WWW-Authenticate: Basic realm="My site"');
