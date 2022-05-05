@@ -34,8 +34,9 @@
     <div class="form-title">
       Форма
       <div>
-        <a href="login.php?logout=1" style="display: <?php (!empty($_SESSION['login'])) ? "inline-block" : "none"; ?>">выйти</a>
-      </div>
+      <a href="login.php?logout=1" <?php (empty($_SESSION['login']) || !empty($_SESSION['admin'])) ? print('style="display:none"') : print('style="display:inline-block"'); ?>>Выйти</a>
+      <a href="admin.php" <?php (empty($_SESSION['admin'])) ? print('style="display:none"') : print('style="display:inline-block"'); ?>>Вернуться</a>
+    </div>
     </div>
     <form method="POST" action="">
       <div class="input-group" <?php if ($errors['name']) {
@@ -110,15 +111,15 @@
                                                                                   print 'class="error"';
                                                                                 } ?>>
         <option value="inf" <?php foreach (explode(',', $values['select']) as $value) {
-                              if ($value == "inf") print("selected");
+                              if ($value == "inf") print('selected');
                             } ?>>Бессмертие</option>
 
         <option value="through" <?php foreach (explode(',', $values['select']) as $value) {
-                                  if ($value == "through") print("selected");
+                                  if ($value == "through") print('selected');
                                 } ?>>Прохождение сквозь стены</option>
 
         <option value="levitation" <?php foreach (explode(',', $values['select']) as $value) {
-                                      if ($value == "levitation") print("selected");
+                                      if ($value == "levitation") print('selected');
                                     } ?>>Левитация</option>
 
       </select>
