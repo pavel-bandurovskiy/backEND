@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $values['policy'] = empty($_COOKIE['policy_value']) ? '' : $_COOKIE['policy_value'];
 
 } else {
-    if($_POST['edit']) {
+    if(!empty($_POST['edit'])) {
         setcookie('login_value', $_POST['edit'], time() + 12 * 30 * 24 * 60 * 60);
     }
     $errors = FALSE;
