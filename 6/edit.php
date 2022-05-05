@@ -165,14 +165,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $result = $powers->fetch(PDO::FETCH_ASSOC);
         $values['select'] = $result['powers'];
 
-        // setcookie('name_value', $result['name'], time() + 12 * 30 * 24 * 60 * 60);
-        // setcookie('email_value', $result['email'], time() + 12 * 30 * 24 * 60 * 60);
-        // setcookie('birth_value', $result['birth'], time() + 12 * 30 * 24 * 60 * 60);
-        // setcookie('gender_value', $result['gender'], time() + 12 * 30 * 24 * 60 * 60);
-        // setcookie('limbs_value', $result['limbs'], time() + 12 * 30 * 24 * 60 * 60);
-        // setcookie('select_value', implode(',', $result['select']), time() + 12 * 30 * 24 * 60 * 60);
-        // setcookie('bio_value', $result['bio'], time() + 12 * 30 * 24 * 60 * 60);
-        // setcookie('policy_value', $result['policy'], time() + 12 * 30 * 24 * 60 * 60);
     }
 
     if ($errors) {
@@ -217,7 +209,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     // Делаем перенаправление.
-    header('Location: edit.php');
+    if(empty($_POST['edit'])) {
+        header('Location: edit.php');
+    }
 }?>
 
 <!DOCTYPE html>
