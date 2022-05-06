@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   }
 
   if (!empty($_COOKIE['update'])) {
-    setcookie('update', 100000);
+    setcookie('update','', 100000);
 
     $messages[] = 'Данные изменены';
   }
