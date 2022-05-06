@@ -192,18 +192,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $limbs = $values['limbs'];
         $bio = $values['bio'];
         $policy = $values['policy'];
-        $powers = implode(',', $values['select']);
-
+        $select = implode(',', $values['select']);
+        $login_value = $_COOKIE['login_value'];
         $user = 'u47572';
         $pass = '4532025';
         $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 
         try {
             $stmt = $db->prepare("UPDATE members SET name = ?, email = ?, date = ?, gender = ?, limbs = ?, bio = ?, policy = ? WHERE login = ?");
-            $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $_COOKIE['login_value']));
+            $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $login_value));
     
             $superpowers = $db->prepare("UPDATE powers2 SET powers = ? WHERE user_login = ? ");
-            $superpowers->execute(array($powers, $_COOKIE['login_value']));
+            $superpowers->execute(array($select, $login_value));
         } catch (PDOException $e) {
             print('Error : ' . $e->getMessage());
             exit();
@@ -211,9 +211,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('update', '1');
 
     // Делаем перенаправление.
-    if(empty($_POST['edit'])) {
-        header('Location: edit.php');
-    }
+    
+    header('Location: edit.php');
 }?>
 
 <!DOCTYPE html>
