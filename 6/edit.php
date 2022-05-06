@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('login_value', $_POST['edit'], time() + 12 * 30 * 24 * 60 * 60);
     }
     $errors = FALSE;
-    if(empty($_COOKIE['login_value'])) {
+    if(empty($_POST['edit'])) {
             // проверка поля имени
         if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
             setcookie('name_error', '1', time() + 24 * 60 * 60);
