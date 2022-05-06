@@ -1,72 +1,73 @@
 <?php
 
 header('Content-Type: text/html; charset=UTF-8');
-$values = array();
-$messages = array();
-$errors = array();
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
-    if(!empty($_GET['goback'])) {
-        setcookie('name_value', '', 100000);
-        setcookie('email_value', '', 100000);
-        setcookie('birth_value', '', 100000);
-        setcookie('gender_value', '', 100000);
-        setcookie('limbs_value', '', 100000);
-        setcookie('select_value', '', 100000);
-        setcookie('bio_value', '', 100000);
-        setcookie('policy_value', '', 100000);
-        setcookie('login_value', '', 100000);
-        header('Location: admin.php');
-    }
+  $messages = array();
+  if (!empty($_GET['goback'])) {
+    setcookie('name_value', '', 100000);
+    setcookie('email_value', '', 100000);
+    setcookie('birth_value', '', 100000);
+    setcookie('gender_value', '', 100000);
+    setcookie('limbs_value', '', 100000);
+    setcookie('select_value', '', 100000);
+    setcookie('bio_value', '', 100000);
+    setcookie('policy_value', '', 100000);
+    setcookie('login_value', '', 100000);
+    header('Location: admin.php');
+  }
 
-    if (!empty($_COOKIE['update'])) {
-        setcookie('update', 100000);
+  if (!empty($_COOKIE['update'])) {
+    setcookie('update', 100000);
 
-        $messages[] = 'Данные изменены';
-    }
-    $errors['name'] = !empty($_COOKIE['name_error']);
-    $errors['email'] = !empty($_COOKIE['email_error']);
-    $errors['birth'] = !empty($_COOKIE['birth_error']);
-    $errors['gender'] = !empty($_COOKIE['gender_error']);
-    $errors['limbs'] = !empty($_COOKIE['limbs_error']);
-    $errors['select'] = !empty($_COOKIE['select_error']);
-    $errors['bio'] = !empty($_COOKIE['bio_error']);
-    $errors['policy'] = !empty($_COOKIE['policy_error']);
+    $messages[] = 'Данные изменены';
+  }
+  $errors = array();
+  $errors['name'] = !empty($_COOKIE['name_error']);
+  $errors['email'] = !empty($_COOKIE['email_error']);
+  $errors['birth'] = !empty($_COOKIE['birth_error']);
+  $errors['gender'] = !empty($_COOKIE['gender_error']);
+  $errors['limbs'] = !empty($_COOKIE['limbs_error']);
+  $errors['select'] = !empty($_COOKIE['select_error']);
+  $errors['bio'] = !empty($_COOKIE['bio_error']);
+  $errors['policy'] = !empty($_COOKIE['policy_error']);
 
-    if ($errors['name']) {
-        setcookie('name_error', '', 100000);
-        $messages[] = '<div class="error">Введите имя.</div>';
-    }
-    if ($errors['email']) {
-        setcookie('email_error', '', 100000);
-        $messages[] = '<div class="error">Введите верный email.</div>';
-    }
-    if ($errors['birth']) {
-        setcookie('birth_error', '', 100000);
-        $messages[] = '<div class="error">Введите корректную дату рождения.</div>';
-    }
-    if ($errors['gender']) {
-        setcookie('gender_error', '', 100000);
-        $messages[] = '<div class="error">Выберите пол.</div>';
-    }
-    if ($errors['limbs']) {
-        setcookie('limbs_error', '', 100000);
-        $messages[] = '<div class="error">Выберите количество конечностей.</div>';
-    }
-    if ($errors['select']) {
-        setcookie('select_error', '', 100000);
-        $messages[] = '<div class="error">Выберите суперспособнос(ть/ти).</div>';
-    }
-    if ($errors['bio']) {
-        setcookie('bio_error', '', 100000);
-        $messages[] = '<div class="error">Расскажите о себе.</div>';
-    }
-    if ($errors['policy']) {
-        setcookie('policy_error', '', 100000);
-        $messages[] = '<div class="error">Ознакомтесь с политикой обработки данных.</div>';
-    }
-    
+  if ($errors['name']) {
+    setcookie('name_error', '', 100000);
+    $messages[] = '<div class="error">Введите имя.</div>';
+  }
+  if ($errors['email']) {
+    setcookie('email_error', '', 100000);
+    $messages[] = '<div class="error">Введите верный email.</div>';
+  }
+  if ($errors['birth']) {
+    setcookie('birth_error', '', 100000);
+    $messages[] = '<div class="error">Введите корректную дату рождения.</div>';
+  }
+  if ($errors['gender']) {
+    setcookie('gender_error', '', 100000);
+    $messages[] = '<div class="error">Выберите пол.</div>';
+  }
+  if ($errors['limbs']) {
+    setcookie('limbs_error', '', 100000);
+    $messages[] = '<div class="error">Выберите количество конечностей.</div>';
+  }
+  if ($errors['select']) {
+    setcookie('select_error', '', 100000);
+    $messages[] = '<div class="error">Выберите суперспособнос(ть/ти).</div>';
+  }
+  if ($errors['bio']) {
+    setcookie('bio_error', '', 100000);
+    $messages[] = '<div class="error">Расскажите о себе.</div>';
+  }
+  if ($errors['policy']) {
+    setcookie('policy_error', '', 100000);
+    $messages[] = '<div class="error">Ознакомтесь с политикой обработки данных.</div>';
+  }
+
+  $values = array();
+  if (empty($_GET['id'])) {
     $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
     $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
     $values['birth'] = empty($_COOKIE['birth_value']) ? '' : $_COOKIE['birth_value'];
@@ -75,145 +76,144 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $values['select'] = empty($_COOKIE['select_value']) ? '' : $_COOKIE['select_value'];
     $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
     $values['policy'] = empty($_COOKIE['policy_value']) ? '' : $_COOKIE['policy_value'];
+  } else {
+    $user = 'u47572';
+    $pass = '4532025';
+    $member_id = $_GET['id'];
 
+    $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
+    $stmt = $db->prepare("SELECT * FROM members WHERE id = ?");
+    $stmt->execute(array($member_id));
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $values['name'] = $result['name'];
+    $values['email'] = $result['email'];
+    $values['birth'] = $result['date'];
+    $values['gender'] = $result['gender'];
+    $values['limbs'] = $result['limbs'];
+    $values['bio'] = $result['bio'];
+    $values['policy'] = $result['policy'];
+
+    setcookie('login_value', $result['login'], time() + 12 * 30 * 24 * 60 * 60);
+
+    $powers = $db->prepare("SELECT * FROM powers2 WHERE user_login = ?");
+    $powers->execute(array($_COOKIE['login_value']));
+    $result = $powers->fetch(PDO::FETCH_ASSOC);
+    $values['select'] = $result['powers'];
+  }
 } else {
-    if(!empty($_POST['edit'])) {
-        setcookie('login_value', $_POST['edit'], time() + 12 * 30 * 24 * 60 * 60);
-    }
-    $errors = FALSE;
-    if(empty($_POST['edit'])) {
-            // проверка поля имени
-        if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
-            setcookie('name_error', '1', time() + 24 * 60 * 60);
-            $errors = TRUE;
-        } else {
-            setcookie('name_value', $_POST['name'], time() + 12 * 30 * 24 * 60 * 60);
-        }
+  $errors = FALSE;
 
-        // проверка поля email
-        if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-            setcookie('email_error', '1', time() + 24 * 60 * 60);
-            $errors = TRUE;
-        } else {
-            setcookie('email_value', $_POST['email'], time() + 12 * 30 * 24 * 60 * 60);
-        }
+  // проверка поля имени
+  if (!preg_match('/^[a-z0-9_\s]+$/i', $_POST['name'])) {
+    setcookie('name_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  } else {
+    setcookie('name_value', $_POST['name'], time() + 12 * 30 * 24 * 60 * 60);
+  }
 
-        // проверка поля даты рождения
-        $birth = explode('-', $_POST['birth']);
-        $age = (int)date('Y') - (int)$birth[0];
-        if ($age > 100 || $age < 0) {
-            setcookie('birth_error', '1', time() + 24 * 60 * 60);
-            $errors = TRUE;
-        } else {
-            setcookie('birth_value', $_POST['birth'], time() + 12 * 30 * 24 * 60 * 60);
-        }
+  // проверка поля email
+  if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    setcookie('email_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  } else {
+    setcookie('email_value', $_POST['email'], time() + 12 * 30 * 24 * 60 * 60);
+  }
 
-        // проверка поля пола
-        if (empty($_POST['gender'])) {
-            setcookie('gender_error', '1', time() + 24 * 60 * 60);
-            $errors = TRUE;
-        } else {
-            setcookie('gender_value', $_POST['gender'], time() + 12 * 30 * 24 * 60 * 60);
-        }
+  // проверка поля даты рождения
+  $birth = explode('-', $_POST['birth']);
+  $age = (int)date('Y') - (int)$birth[0];
+  if ($age > 100 || $age < 0) {
+    setcookie('birth_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  } else {
+    setcookie('birth_value', $_POST['birth'], time() + 12 * 30 * 24 * 60 * 60);
+  }
 
-        // проверка поля количества конечностей
-        if (empty($_POST['limbs'])) {
-            setcookie('limbs_error', '1', time() + 24 * 60 * 60);
-            $errors = TRUE;
-        } else {
-            setcookie('limbs_value', $_POST['limbs'], time() + 12 * 30 * 24 * 60 * 60);
-        }
+  // проверка поля пола
+  if (empty($_POST['gender'])) {
+    setcookie('gender_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  } else {
+    setcookie('gender_value', $_POST['gender'], time() + 12 * 30 * 24 * 60 * 60);
+  }
 
-        // проверка поля суперспособностей
-        if (empty($_POST['select'])) {
-            setcookie('select_error', '1', time() + 24 * 60 * 60);
-            $errors = TRUE;
-        } else {
-            setcookie('select_value', implode(',', $_POST['select']), time() + 12 * 30 * 24 * 60 * 60);
-        }
+  // проверка поля количества конечностей
+  if (empty($_POST['limbs'])) {
+    setcookie('limbs_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  } else {
+    setcookie('limbs_value', $_POST['limbs'], time() + 12 * 30 * 24 * 60 * 60);
+  }
 
-        // проверка поля биографии
-        if (empty($_POST['bio'])) {
-            setcookie('bio_error', '1', time() + 24 * 60 * 60);
-            $errors = TRUE;
-        } else {
-            setcookie('bio_value', $_POST['bio'], time() + 12 * 30 * 24 * 60 * 60);
-        }
+  // проверка поля суперспособностей
+  if (empty($_POST['select'])) {
+    setcookie('select_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  } else {
+    setcookie('select_value', implode(',', $_POST['select']), time() + 12 * 30 * 24 * 60 * 60);
+  }
 
-        // проверка поля политики обработки данных 
-        if (empty($_POST['policy'])) {
-            setcookie('policy_error', '1', time() + 24 * 60 * 60);
-            $errors = TRUE;
-        } else {
-            setcookie('policy_value', $_POST['policy'], time() + 12 * 30 * 24 * 60 * 60);
-        }
-    } else {
-        $user = 'u47572';
-        $pass = '4532025';
-        $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
-        $stmt = $db->prepare("SELECT * FROM members WHERE login = ?");
-        $stmt->execute(array($_COOKIE['login_value']));
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $values['name'] = $result['name'];
-        $values['email'] = $result['email'];
-        $values['birth'] = $result['date'];
-        $values['gender'] = $result['gender'];
-        $values['limbs'] = $result['limbs'];
-        $values['bio'] = $result['bio'];
-        $values['policy'] = $result['policy'];
+  // проверка поля биографии
+  if (empty($_POST['bio'])) {
+    setcookie('bio_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  } else {
+    setcookie('bio_value', $_POST['bio'], time() + 12 * 30 * 24 * 60 * 60);
+  }
 
-        $powers = $db->prepare("SELECT * FROM powers2 WHERE user_login = ?");
-        $powers->execute(array($_COOKIE['login_value']));
-        $result = $powers->fetch(PDO::FETCH_ASSOC);
-        $values['select'] = $result['powers'];
+  // проверка поля политики обработки данных 
+  if (empty($_POST['policy'])) {
+    setcookie('policy_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  } else {
+    setcookie('policy_value', $_POST['policy'], time() + 12 * 30 * 24 * 60 * 60);
+  }
+  if ($errors) {
+    header('Location: edit.php');
+    exit();
+  } else {
+    setcookie('name_error', '', 100000);
+    setcookie('email_error', '', 100000);
+    setcookie('birth_error', '', 100000);
+    setcookie('gender_error', '', 100000);
+    setcookie('limbs_error', '', 100000);
+    setcookie('select_error', '', 100000);
+    setcookie('bio_error', '', 100000);
+    setcookie('policy_error', '', 100000);
+  }
 
-    }
+  $name = $values['name'];
+  $email = $values['email'];
+  $date = $values['birth'];
+  $gender = $values['gender'];
+  $limbs = $values['limbs'];
+  $bio = $values['bio'];
+  $policy = $values['policy'];
+  $select = implode(',', $values['select']);
+  $login_value = $_COOKIE['login_value'];
+  $user = 'u47572';
+  $pass = '4532025';
+  $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 
-    if ($errors) {
-        header('Location: edit.php');
-        exit();
-    } else {
-        setcookie('name_error', '', 100000);
-        setcookie('email_error', '', 100000);
-        setcookie('birth_error', '', 100000);
-        setcookie('gender_error', '', 100000);
-        setcookie('limbs_error', '', 100000);
-        setcookie('select_error', '', 100000);
-        setcookie('bio_error', '', 100000);
-        setcookie('policy_error', '', 100000);
-    }
+  try {
+    $stmt = $db->prepare("UPDATE members SET name = ?, email = ?, date = ?, gender = ?, limbs = ?, bio = ?, policy = ? WHERE login = ?");
+    $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $login_value));
 
-        $name = $values['name'];
-        $email = $values['email'];
-        $date = $values['birth'];
-        $gender = $values['gender'];
-        $limbs = $values['limbs'];
-        $bio = $values['bio'];
-        $policy = $values['policy'];
-        $select = implode(',', $values['select']);
-        $login_value = $_COOKIE['login_value'];
-        $user = 'u47572';
-        $pass = '4532025';
-        $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
+    $superpowers = $db->prepare("UPDATE powers2 SET powers = ? WHERE user_login = ? ");
+    $superpowers->execute(array($select, $login_value));
+  } catch (PDOException $e) {
+    print('Error : ' . $e->getMessage());
+    exit();
+  }
+  setcookie('update', '1');
 
-        try {
-            $stmt = $db->prepare("UPDATE members SET name = ?, email = ?, date = ?, gender = ?, limbs = ?, bio = ?, policy = ? WHERE login = ?");
-            $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $login_value));
-    
-            $superpowers = $db->prepare("UPDATE powers2 SET powers = ? WHERE user_login = ? ");
-            $superpowers->execute(array($select, $login_value));
-        } catch (PDOException $e) {
-            print('Error : ' . $e->getMessage());
-            exit();
-        }
-        setcookie('update', '1');
+  // Делаем перенаправление.
 
-    // Делаем перенаправление.
-    
-    if(empty($_POST['edit'])){
-        header('Location: edit.php');
-    }
-}?>
+  if (empty($_POST['edit'])) {
+    header('Location: edit.php');
+  }
+} ?>
 
 <!DOCTYPE html>
 <html lang="">
@@ -223,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   <meta charset="utf-8" />
   <link rel="stylesheet" href="./style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
-  <title>Update <?php echo $values['name']?> data</title>
+  <title>Update <?php echo $values['name'] ?> data</title>
   <style>
   </style>
 </head>
@@ -246,8 +246,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     <div class="form-title">
       Форма изменения данных
       <div>
-      <a href="edit.php?goback=1">Вернуться</a>
-    </div>
+        <a href="edit.php?goback=1">Вернуться</a>
+      </div>
     </div>
     <form method="POST" action="">
       <div class="input-group" <?php if ($errors['name']) {
