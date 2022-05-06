@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 header('Content-Type: text/html; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   }
 
   if (!empty($_COOKIE['update'])) {
-    setcookie('update','', 100000);
+    setcookie('update', '', 100000);
 
     $messages[] = 'Данные изменены';
   }
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $values['bio'] = $result['bio'];
     $values['policy'] = $result['policy'];
 
-    setcookie('login_value', $result['login'], time() + 12 * 30 * 24 * 60 * 60);
+    $_SESSION['login_value'] = $result['login'];
 
     $powers = $db->prepare("SELECT * FROM powers2 WHERE user_login = ?");
     $powers->execute(array($result['login']));
@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $bio = $values['bio'];
   $policy = $values['policy'];
   $select = implode(',', $values['select']);
-  $login_value = $_COOKIE['login_value'];
+  $login_value = $_SESSION['login_value'];
   $user = 'u47572';
   $pass = '4532025';
   $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
@@ -209,10 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   setcookie('update', '1');
 
   // Делаем перенаправление.
-
-  if (empty($_POST['edit'])) {
-    header('Location: edit.php');
-  }
+  header('Location: edit.php');
 } ?>
 
 <!DOCTYPE html>
