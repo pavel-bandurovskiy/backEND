@@ -17,9 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     header('Location: admin.php');
   }
 
-  if (!empty($_COOKIE['update'])) {
-    setcookie('update', '', 100000);
-
+  if (!empty($_GET['upd'])) {
     $messages[] = 'Данные изменены';
   }
   $errors = array();
@@ -93,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $values['bio'] = $result['bio'];
     $values['policy'] = $result['policy'];
 
-    $_SESSION['login_value'] = $result['login'];
+    $_COOKIE['user_id'] = $member_id;
 
     $powers = $db->prepare("SELECT * FROM powers2 WHERE user_login = ?");
     $powers->execute(array($result['login']));
@@ -190,22 +188,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $bio = $values['bio'];
   $policy = $values['policy'];
   $select = implode(',', $values['select']);
-  $login_value = $_SESSION['login_value'];
   $user = 'u47572';
   $pass = '4532025';
   $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 
+  $member_id = $_COOKIE['user_id'];
+
   try {
+    $stmt = $db->prepare("SELECT login FROM members WHERE id = ?");
+    $stmt->execute(array($member_id));
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
     $stmt = $db->prepare("UPDATE members SET name = ?, email = ?, date = ?, gender = ?, limbs = ?, bio = ?, policy = ? WHERE login = ?");
-    $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $login_value));
+    $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $result['login']));
 
     $superpowers = $db->prepare("UPDATE powers2 SET powers = ? WHERE user_login = ? ");
-    $superpowers->execute(array($select, $login_value));
+    $superpowers->execute(array($select, $result['login']));
   } catch (PDOException $e) {
     print('Error : ' . $e->getMessage());
     exit();
   }
-  setcookie('update', '1');
 
   // Делаем перенаправление.
   header('Location: ?upd=1');
