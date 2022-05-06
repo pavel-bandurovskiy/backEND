@@ -1,6 +1,9 @@
 <?php
 
 header('Content-Type: text/html; charset=UTF-8');
+$values = array();
+$messages = array();
+$errors = array();
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
@@ -17,14 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Location: admin.php');
     }
 
-    $messages = array();
-
     if (!empty($_COOKIE['update'])) {
         setcookie('update', 100000);
 
         $messages[] = 'Данные изменены';
     }
-    $errors = array();
     $errors['name'] = !empty($_COOKIE['name_error']);
     $errors['email'] = !empty($_COOKIE['email_error']);
     $errors['birth'] = !empty($_COOKIE['birth_error']);
@@ -66,8 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('policy_error', '', 100000);
         $messages[] = '<div class="error">Ознакомтесь с политикой обработки данных.</div>';
     }
-
-    $values = array();
     
     $values['name'] = empty($_COOKIE['name_value']) ? '' : $_COOKIE['name_value'];
     $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
@@ -212,7 +210,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     // Делаем перенаправление.
     
-    header('Location: edit.php');
+    if(empty($_POST['edit'])){
+        header('Location: edit.php');
+    }
 }?>
 
 <!DOCTYPE html>
