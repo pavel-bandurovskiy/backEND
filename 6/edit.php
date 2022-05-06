@@ -1,5 +1,4 @@
 <?php
-session_start();
 header('Content-Type: text/html; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -209,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   setcookie('update', '1');
 
   // Делаем перенаправление.
-  header('Location: edit.php');
+  header('Location: ?upd=1');
 } ?>
 
 <!DOCTYPE html>
