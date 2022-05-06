@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('login_value', $result['login'], time() + 12 * 30 * 24 * 60 * 60);
 
     $powers = $db->prepare("SELECT * FROM powers2 WHERE user_login = ?");
-    $powers->execute(array($_COOKIE['login_value']));
+    $powers->execute(array($result['login']));
     $result = $powers->fetch(PDO::FETCH_ASSOC);
     $values['select'] = $result['powers'];
   }
