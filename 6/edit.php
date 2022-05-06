@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $values['bio'] = $result['bio'];
     $values['policy'] = $result['policy'];
 
-    $_COOKIE['user_id'] = $member_id;
+    setcookie('user_id', $member_id, time() + 12 * 30 * 24 * 60 * 60);
 
     $powers = $db->prepare("SELECT * FROM powers2 WHERE user_login = ?");
     $powers->execute(array($result['login']));
