@@ -100,10 +100,7 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
                     <?php echo $value['bio']?>
                 </td>
                 <td class="edit-buttons">
-                    <form action="edit.php" method="post">
-                        <input value="<?php echo $value['login']?>" name="edit" type="hidden"/>
-                        <button id="edit">Edit</button>
-                    </form>
+                    <a id="edit" href="edit.php?id=<?php echo $value['id']?>">Edit</a>
                 </td>
                 <td class="edit-buttons">
                     <form action="" method="post">
