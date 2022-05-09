@@ -2,7 +2,6 @@
 
 $user = 'u47572';
 $pass = '4532025';
-$values = array();
 $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -23,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else if (!empty($_POST['edit'])) {
         $user = 'u47572';
         $pass = '4532025';
-
         $member_id = $_POST['edit'];
 
         $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
@@ -64,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $db->prepare("SELECT login FROM members WHERE id = ?");
             $stmt->execute(array($member_id));
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            
+
             setcookie('login_value', $result['login'], time() + 12 * 30 * 24 * 60 * 60);
 
             $stmt = $db->prepare("UPDATE members SET name = ?, email = ?, date = ?, gender = ?, limbs = ?, bio = ?, policy = ? WHERE login = ?");
@@ -77,8 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
     }
-} else {
-    $values = array();
 }
 
 if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
@@ -110,6 +106,10 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
     $stmt = $db->prepare("SELECT * FROM members");
     $stmt->execute([]);
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = $db->prepare("SELECT powers, COUNT(*) as owners FROM powers2 GROUP BY powers");
+    $stmt->execute();
+    $powersCount = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
     header('HTTP/1.1 401 Unanthorized');
     header('WWW-Authenticate: Basic realm="My site"');
@@ -129,6 +129,22 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
 </head>
 
 <body>
+    <div class="records-list">
+        <table>
+            <tr>
+                <th>Название способности</th>
+                <th>Количество обладателей</th>
+            </tr>
+            <?php
+            if (!empty($powersCount)) {
+                foreach ($powersCount as $value) {
+            ?>
+                    <td><?php echo $value['powers'] ?></td>
+                    <td><?php echo $value['owners'] ?></td>
+            <?php }
+            } ?>
+        </table>
+    </div>
     <div class="records-list">
         <table>
             <tr>
