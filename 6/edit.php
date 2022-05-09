@@ -212,7 +212,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   }
 
   // Делаем перенаправление.
-  header('Location: ?upd=1');
+  if(empty($_GET['id'])) {
+    header('Location: ?upd=1');
+  }
 } ?>
 
 <!DOCTYPE html>
