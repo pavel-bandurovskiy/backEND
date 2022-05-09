@@ -64,6 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt = $db->prepare("SELECT login FROM members WHERE id = ?");
             $stmt->execute(array($member_id));
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            setcookie('login_value', $result['login'], time() + 12 * 30 * 24 * 60 * 60);
 
             $stmt = $db->prepare("UPDATE members SET name = ?, email = ?, date = ?, gender = ?, limbs = ?, bio = ?, policy = ? WHERE login = ?");
             $stmt->execute(array($name, $email, $date, $gender, $limbs, $bio, $policy, $result['login']));
