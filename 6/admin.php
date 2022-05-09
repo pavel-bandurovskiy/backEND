@@ -46,14 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $powers->fetch(PDO::FETCH_ASSOC);
         $values['select'] = $result['powers'];
     } else {
-        $name = $values['name'];
-        $email = $values['email'];
-        $date = $values['birth'];
-        $gender = $values['gender'];
-        $limbs = $values['limbs'];
-        $bio = $values['bio'];
-        $policy = $values['policy'];
-        $select = implode(',', $values['select']);
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $date = $_POST['birth'];
+        $gender = $_POST['gender'];
+        $limbs = $_POST['limbs'];
+        $bio = $_POST['bio'];
+        $policy = $_POST['policy'];
+        $select = implode(',', $_POST['select']);
         $user = 'u47572';
         $pass = '4532025';
         $db = new PDO('mysql:host=localhost;dbname=u47572', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
