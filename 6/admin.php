@@ -139,8 +139,10 @@ if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
             if (!empty($powersCount)) {
                 foreach ($powersCount as $value) {
             ?>
-                    <td><?php echo $value['powers'] ?></td>
-                    <td><?php echo $value['owners'] ?></td>
+                    <tr>
+                        <td><?php echo $value['powers'] ?></td>
+                        <td><?php echo $value['owners'] ?></td>
+                    </tr>
             <?php }
             } ?>
         </table>
